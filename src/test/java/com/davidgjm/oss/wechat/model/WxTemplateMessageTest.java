@@ -1,5 +1,8 @@
 package com.davidgjm.oss.wechat.model;
 
+import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessage;
+import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessageData;
+import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessageValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.davidgjm.oss.wechat.AbstractJacksonBackedTest;
 import org.junit.Before;

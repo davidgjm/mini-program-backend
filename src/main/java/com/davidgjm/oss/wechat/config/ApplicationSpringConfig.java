@@ -1,6 +1,6 @@
 package com.davidgjm.oss.wechat.config;
 
-import com.davidgjm.oss.wechat.persistence.AuditorAwareImpl;
+import com.davidgjm.oss.wechat.base.persistence.AuditorAwareImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;

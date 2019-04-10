@@ -1,8 +1,8 @@
 package com.davidgjm.oss.wechat.sandbox;
 
-import com.davidgjm.oss.wechat.controllers.AbstractV1Controller;
-import com.davidgjm.oss.wechat.wxapi.WxApiAccessTokenResponse;
-import com.davidgjm.oss.wechat.services.WxApiService;
+import com.davidgjm.oss.wechat.base.controllers.AbstractV1Controller;
+import com.davidgjm.oss.wechat.auth.WxApiAccessTokenResponse;
+import com.davidgjm.oss.wechat.base.services.WxApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

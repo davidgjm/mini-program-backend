@@ -1,6 +1,6 @@
-package com.davidgjm.oss.wechat.templatemessage.services;
+package com.davidgjm.oss.wechat.templatemessage;
 
-import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessageConfig;
+import com.davidgjm.oss.wechat.templatemessage.WxTemplateMessageConfig;
 import com.davidgjm.oss.wechat.templatemessage.WxTemplateNotFoundException;
 
 import javax.validation.constraints.NotBlank;

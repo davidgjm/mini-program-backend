@@ -1,9 +1,5 @@
-package com.davidgjm.oss.wechat.templatemessage.services;
+package com.davidgjm.oss.wechat.templatemessage;
 
-import com.davidgjm.oss.wechat.templatemessage.WxFormIdAlreadyExistsException;
-import com.davidgjm.oss.wechat.templatemessage.WxFormIdNotFoundException;
-import com.davidgjm.oss.wechat.templatemessage.domain.WxForm;
-import com.davidgjm.oss.wechat.templatemessage.repositories.WxFormRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

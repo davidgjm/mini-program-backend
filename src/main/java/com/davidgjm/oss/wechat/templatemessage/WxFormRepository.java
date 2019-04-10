@@ -1,7 +1,7 @@
-package com.davidgjm.oss.wechat.templatemessage.repositories;
+package com.davidgjm.oss.wechat.templatemessage;
 
 import com.davidgjm.oss.wechat.base.GenericRepository;
-import com.davidgjm.oss.wechat.templatemessage.domain.WxForm;
+import com.davidgjm.oss.wechat.templatemessage.WxForm;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

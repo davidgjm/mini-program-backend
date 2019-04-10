@@ -1,11 +1,10 @@
-package com.davidgjm.oss.wechat.controllers;
+package com.davidgjm.oss.wechat.base.controllers;
 
-import com.davidgjm.oss.wechat.base.controllers.AbstractWechatController;
 import com.davidgjm.oss.wechat.wxsession.WxSession;
-import com.davidgjm.oss.wechat.wxuser.WxUser;
-import com.davidgjm.oss.wechat.wxuser.WxUserService;
 import com.davidgjm.oss.wechat.wxsession.WxSessionService;
+import com.davidgjm.oss.wechat.wxuser.WxUser;
 import com.davidgjm.oss.wechat.wxuser.WxUserPhoneNumberNotFoundException;
+import com.davidgjm.oss.wechat.wxuser.WxUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

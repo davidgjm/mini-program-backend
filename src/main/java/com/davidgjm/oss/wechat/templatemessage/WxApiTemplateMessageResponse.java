@@ -1,4 +1,4 @@
-package com.davidgjm.oss.wechat.templatemessage.client;
+package com.davidgjm.oss.wechat.templatemessage;
 
 import com.davidgjm.oss.wechat.base.AbstractWxApiResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

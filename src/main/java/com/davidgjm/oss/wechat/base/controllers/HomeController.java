@@ -1,4 +1,4 @@
-package com.davidgjm.oss.wechat.controllers;
+package com.davidgjm.oss.wechat.base.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;

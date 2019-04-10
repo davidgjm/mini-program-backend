@@ -1,6 +1,6 @@
-package com.davidgjm.oss.wechat.templatemessage.services;
+package com.davidgjm.oss.wechat.templatemessage;
 
-import com.davidgjm.oss.wechat.templatemessage.domain.WxForm;
+import com.davidgjm.oss.wechat.templatemessage.WxForm;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

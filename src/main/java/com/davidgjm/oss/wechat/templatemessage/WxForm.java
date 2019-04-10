@@ -1,4 +1,4 @@
-package com.davidgjm.oss.wechat.templatemessage.domain;
+package com.davidgjm.oss.wechat.templatemessage;
 
 import com.davidgjm.oss.wechat.base.persistence.GenericEntity;
 import lombok.AllArgsConstructor;

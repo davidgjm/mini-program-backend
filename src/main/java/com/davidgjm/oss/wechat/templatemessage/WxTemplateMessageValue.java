@@ -1,4 +1,4 @@
-package com.davidgjm.oss.wechat.templatemessage.domain;
+package com.davidgjm.oss.wechat.templatemessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

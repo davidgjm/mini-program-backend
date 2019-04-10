@@ -1,8 +1,5 @@
-package com.davidgjm.oss.wechat.templatemessage.services;
+package com.davidgjm.oss.wechat.templatemessage;
 
-import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessageConfig;
-import com.davidgjm.oss.wechat.templatemessage.WxTemplateNotFoundException;
-import com.davidgjm.oss.wechat.templatemessage.repositories.WxTemplateMessageConfigRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

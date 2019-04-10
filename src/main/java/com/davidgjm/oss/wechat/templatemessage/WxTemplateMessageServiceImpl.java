@@ -1,11 +1,7 @@
-package com.davidgjm.oss.wechat.templatemessage.services;
+package com.davidgjm.oss.wechat.templatemessage;
 
-import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessageConfig;
 import com.davidgjm.oss.wechat.base.services.WxApiService;
 import com.davidgjm.oss.wechat.wxuser.WxUserService;
-import com.davidgjm.oss.wechat.templatemessage.client.WxApiTemplateMessageResponse;
-import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessage;
-import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessageData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,7 +69,6 @@ public class WxTemplateMessageServiceImpl implements WxTemplateMessageService {
 
     private WxTemplateMessage buildMessage(String templateName, String recipientOpenid, WxTemplateMessageData messageData) {
         log.debug("Building template message for {}", templateName);
-//        MiniProgramSettings.WxTemplateMessageConfigEntry configEntry = getTemplateMessageConfig(messageType);
         WxTemplateMessageConfig templateMessageConfig = templateMessageConfigService.findByName(templateName);
 
         log.debug("configEntry's page is: {}",templateMessageConfig.getPage());

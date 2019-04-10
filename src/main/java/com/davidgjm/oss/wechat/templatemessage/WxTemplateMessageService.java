@@ -1,8 +1,4 @@
-package com.davidgjm.oss.wechat.templatemessage.services;
-
-import com.davidgjm.oss.wechat.templatemessage.client.WxApiTemplateMessageResponse;
-import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessage;
-import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessageData;
+package com.davidgjm.oss.wechat.templatemessage;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;

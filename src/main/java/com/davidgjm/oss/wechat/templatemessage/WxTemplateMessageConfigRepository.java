@@ -1,6 +1,5 @@
-package com.davidgjm.oss.wechat.templatemessage.repositories;
+package com.davidgjm.oss.wechat.templatemessage;
 
-import com.davidgjm.oss.wechat.templatemessage.domain.WxTemplateMessageConfig;
 import com.davidgjm.oss.wechat.base.GenericRepository;
 
 import java.util.Optional;

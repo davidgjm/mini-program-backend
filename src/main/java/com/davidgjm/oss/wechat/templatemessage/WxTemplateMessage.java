@@ -1,4 +1,4 @@
-package com.davidgjm.oss.wechat.templatemessage.domain;
+package com.davidgjm.oss.wechat.templatemessage;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

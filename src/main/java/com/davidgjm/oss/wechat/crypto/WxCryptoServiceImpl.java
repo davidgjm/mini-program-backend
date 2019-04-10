@@ -37,7 +37,7 @@ public class WxCryptoServiceImpl implements WxCryptoService {
     public WxUserInfoDTO decryptUserInfo(@NotNull @Validated WxSession session, WxLoginDTO wxLoginDTO) {
         try {
             String decryptedContent = decrypt(session, wxLoginDTO);
-            log.debug("decrypted data:\n[}", decryptedContent);
+            log.debug("decrypted data:\n{}", decryptedContent);
             return objectMapper.readValue(decryptedContent, WxUserInfoDTO.class);
         } catch (Exception e) {
             e.printStackTrace();

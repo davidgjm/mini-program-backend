@@ -22,4 +22,6 @@ public interface WxSessionService {
     WxSession findBySkey(String skey);
 
     void deleteByOpenid(@NotNull @NotBlank String openid);
+
+    WxSessionDTO wxSessionToWxSessionDTO(WxSession session);
 }

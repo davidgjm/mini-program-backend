@@ -22,11 +22,11 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class WxAuthenticationFilter extends OncePerRequestFilter {
+public class WxAuthFilter extends OncePerRequestFilter {
     private final WxUserManagementService wxUserManagementService;
     private final ObjectMapper objectMapper=new ObjectMapper();
 
-    public WxAuthenticationFilter(WxUserManagementService wxUserManagementService) {
+    public WxAuthFilter(WxUserManagementService wxUserManagementService) {
         this.wxUserManagementService = wxUserManagementService;
     }
 

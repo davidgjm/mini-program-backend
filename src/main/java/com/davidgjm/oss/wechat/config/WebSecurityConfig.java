@@ -1,6 +1,6 @@
 package com.davidgjm.oss.wechat.config;
 
-import com.davidgjm.oss.wechat.auth.WxAuthenticationFilter;
+import com.davidgjm.oss.wechat.auth.WxAuthFilter;
 import com.davidgjm.oss.wechat.auth.WxUserManagementService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +18,9 @@ public class WebSecurityConfig {
 
 
     @Bean
-    public FilterRegistrationBean<WxAuthenticationFilter> wxAuthenticationFilter(WxUserManagementService wxUserManagementService) {
-        FilterRegistrationBean<WxAuthenticationFilter> filterRegistrationBean = new FilterRegistrationBean<>();
-        filterRegistrationBean.setFilter(new WxAuthenticationFilter(wxUserManagementService));
+    public FilterRegistrationBean<WxAuthFilter> wxAuthenticationFilter(WxUserManagementService wxUserManagementService) {
+        FilterRegistrationBean<WxAuthFilter> filterRegistrationBean = new FilterRegistrationBean<>();
+        filterRegistrationBean.setFilter(new WxAuthFilter(wxUserManagementService));
         filterRegistrationBean.addUrlPatterns("/api/v1/*");
         return filterRegistrationBean;
     }

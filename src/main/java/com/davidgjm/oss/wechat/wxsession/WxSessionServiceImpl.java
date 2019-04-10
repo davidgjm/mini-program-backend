@@ -1,11 +1,10 @@
 package com.davidgjm.oss.wechat.wxsession;
 
-import com.davidgjm.oss.wechat.base.services.WxApiService;
-import com.davidgjm.oss.wechat.crypto.WxCryptoService;
-import com.davidgjm.oss.wechat.base.util.ParamChecker;
 import com.davidgjm.oss.wechat.auth.InvalidSkeyException;
+import com.davidgjm.oss.wechat.base.services.WxApiService;
+import com.davidgjm.oss.wechat.base.util.ParamChecker;
+import com.davidgjm.oss.wechat.crypto.WxCryptoService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
@@ -18,17 +17,11 @@ public class WxSessionServiceImpl implements WxSessionService {
     private final WxSessionRepository wxSessionRepository;
     private final WxCryptoService cryptoService;
     private final WxApiService wxApiService;
-    private WxSessionMapper sessionMapper;
 
     public WxSessionServiceImpl(WxSessionRepository wxSessionRepository, WxCryptoService cryptoService, WxApiService wxApiService) {
         this.wxSessionRepository = wxSessionRepository;
         this.cryptoService = cryptoService;
         this.wxApiService = wxApiService;
-    }
-
-    @Autowired
-    public void setSessionMapper(WxSessionMapper sessionMapper) {
-        this.sessionMapper = sessionMapper;
     }
 
     @Override
@@ -58,7 +51,7 @@ public class WxSessionServiceImpl implements WxSessionService {
         } else {
             updated = wxSessionRepository.save(session);
         }
-        return sessionMapper.wxSessionToWxSessionDTO(updated);
+        return wxSessionToWxSessionDTO(updated);
     }
 
     @Override
@@ -86,5 +79,16 @@ public class WxSessionServiceImpl implements WxSessionService {
         } else {
             log.warn("Unable to delete. Provided openid not found. {}", openid);
         }
+    }
+
+    @Override
+    public WxSessionDTO wxSessionToWxSessionDTO(WxSession session) {
+        assert session != null;
+
+        WxSessionDTO wxSessionDTO = new WxSessionDTO();
+
+        wxSessionDTO.setSkey( session.getSkey() );
+
+        return wxSessionDTO;
     }
 }

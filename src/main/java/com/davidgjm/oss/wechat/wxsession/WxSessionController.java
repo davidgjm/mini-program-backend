@@ -1,9 +1,8 @@
 package com.davidgjm.oss.wechat.wxsession;
 
-import com.davidgjm.oss.wechat.base.controllers.AbstractWechatController;
 import com.davidgjm.oss.wechat.auth.WxUserManagementService;
+import com.davidgjm.oss.wechat.base.controllers.AbstractWechatController;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,16 +16,10 @@ import java.util.Optional;
 public class WxSessionController extends AbstractWechatController {
     private final WxUserManagementService wxUserManagementService;
     private final WxSessionService wxSessionService;
-    private WxSessionMapper sessionMapper;
 
     public WxSessionController(WxUserManagementService wxUserManagementService, WxSessionService wxSessionService) {
         this.wxUserManagementService = wxUserManagementService;
         this.wxSessionService = wxSessionService;
-    }
-
-    @Autowired
-    public void setSessionMapper(WxSessionMapper sessionMapper) {
-        this.sessionMapper = sessionMapper;
     }
 
     @GetMapping("/get_session")
@@ -42,7 +35,7 @@ public class WxSessionController extends AbstractWechatController {
         WxSessionDTO session = null;
         Optional<WxSession> wxSessionOptional = wxSessionService.findByLoginCode(code);
         if (wxSessionOptional.isPresent()) {
-            session = sessionMapper.wxSessionToWxSessionDTO(wxSessionOptional.get());
+            session = wxSessionService.wxSessionToWxSessionDTO(wxSessionOptional.get());
             log.debug("Found existing session. Reusing existing session {}", session.getSkey());
         } else {
             log.info("Requesting new session with code: {}", code);

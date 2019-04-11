@@ -33,6 +33,7 @@ public class WxSessionServiceImpl implements WxSessionService {
         //handling skey
         cryptoService.encryptSessionKey(session);
         log.info("Saving session information into database.");
+        createOrUpdate(session);
         return session;
     }
 

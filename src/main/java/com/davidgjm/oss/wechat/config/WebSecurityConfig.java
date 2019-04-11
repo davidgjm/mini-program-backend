@@ -6,7 +6,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,9 +18,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class WebSecurityConfig {
 
 
-
     @Bean
-    public FilterRegistrationBean<WxAuthFilter> wxAuthenticationFilter(WxUserManagementService wxUserManagementService) {
+    public FilterRegistrationBean<WxAuthFilter> wxAuthFilter(WxUserManagementService wxUserManagementService) {
         FilterRegistrationBean<WxAuthFilter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new WxAuthFilter(wxUserManagementService));
         filterRegistrationBean.addUrlPatterns("/api/v1/*");
@@ -41,6 +42,11 @@ public class WebSecurityConfig {
                         .headers().frameOptions().disable()
             ;
             // @formatter:on
+        }
+
+        @Override
+        public void configure(WebSecurity web) throws Exception {
+            web.ignoring().antMatchers(HttpMethod.POST, "/api/v1/wx/session");
         }
     }
 

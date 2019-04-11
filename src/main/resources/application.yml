@@ -8,11 +8,11 @@ spring:
 #######################################################
 wx:
   api:
-      access-token: https://wxapi.weixin.qq.com/cgi-bin/token
-      template-message: https://wxapi.weixin.qq.com/cgi-bin/message/wxopen/template/send
+      access-token: https://api.weixin.qq.com/cgi-bin/token
+      template-message: https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send
   mini-program:
     grantType: authorization_code
-    authUrl: https://wxapi.weixin.qq.com/sns/jscode2session
+    authUrl: https://api.weixin.qq.com/sns/jscode2session
 
 
 ---

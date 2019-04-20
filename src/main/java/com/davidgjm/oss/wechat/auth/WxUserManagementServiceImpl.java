@@ -1,22 +1,21 @@
 package com.davidgjm.oss.wechat.auth;
 
 import com.davidgjm.oss.wechat.crypto.DigestUtil;
-import com.davidgjm.oss.wechat.crypto.WxSecurityException;
 import com.davidgjm.oss.wechat.crypto.WxCryptoService;
-import com.davidgjm.oss.wechat.wxuser.WxUserNotFoundException;
+import com.davidgjm.oss.wechat.crypto.WxEncryptedData;
+import com.davidgjm.oss.wechat.crypto.WxSecurityException;
 import com.davidgjm.oss.wechat.wxsession.WxSession;
-import com.davidgjm.oss.wechat.wxuser.WxUser;
 import com.davidgjm.oss.wechat.wxsession.WxSessionDTO;
-import com.davidgjm.oss.wechat.wxuser.WxUserInfoDTO;
 import com.davidgjm.oss.wechat.wxsession.WxSessionService;
+import com.davidgjm.oss.wechat.wxuser.WxUser;
+import com.davidgjm.oss.wechat.wxuser.WxUserNotFoundException;
 import com.davidgjm.oss.wechat.wxuser.WxUserService;
+import com.davidgjm.oss.wechat.wxuserinfo.WxUserInfoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,27 +34,21 @@ public class WxUserManagementServiceImpl implements WxUserManagementService {
     @Override
     public WxSessionDTO startSession(String loginCode) {
         WxSession session = wxSessionService.requestNewSession(loginCode);
-        WxSessionDTO sessionDTO= wxSessionService.createOrUpdate(session);
-
-        Optional<WxUser> userOptional = wxUserService.findByOpenid(session.getOpenid());
-        userOptional.ifPresent(wxUser -> sessionDTO.setValidUser(StringUtils.hasLength(wxUser.getPhoneNumber())));
-        return sessionDTO;
+        return wxSessionService.createOrUpdate(session);
     }
 
     @Override
     public WxSessionDTO checkSession(String skey) {
-        WxSession wxSession = wxSessionService.findBySkey(skey);
+        WxSession wxSession = wxSessionService.findBySkey(skey).orElseThrow(WxUserNotFoundException::new);
         WxSessionDTO sessionDTO = new WxSessionDTO();
         sessionDTO.setSkey(skey);
         log.debug("Checking user registration status");
-        Optional<WxUser> userOptional = wxUserService.findByOpenid(wxSession.getOpenid());
-        userOptional.ifPresent(wxUser -> sessionDTO.setValidUser(StringUtils.hasLength(wxUser.getPhoneNumber())));
         return sessionDTO;
     }
 
     @Override
-    public boolean validateSignature(WxLoginDTO wxLoginDTO) {
-        WxSession session = wxSessionService.findBySkey(wxLoginDTO.getSkey());
+    public boolean validateSignature(String skey, WxEncryptedData wxLoginDTO) {
+        WxSession session = wxSessionService.findBySkey(skey).orElseThrow(WxUserNotFoundException::new);
 
         String computedSignature = computeSignature(wxLoginDTO, session);
         if (!computedSignature.equals(wxLoginDTO.getSignature())) {
@@ -65,18 +58,18 @@ public class WxUserManagementServiceImpl implements WxUserManagementService {
         return true;
     }
 
-    private String computeSignature(WxLoginDTO wxLoginDTO, WxSession session) {
+    private String computeSignature(WxEncryptedData wxLoginDTO, WxSession session) {
 
         return DigestUtil.HASH_SHA1.hash(wxLoginDTO.getRawData() + session.getSessionKey());
     }
 
     @Override
-    public WxUser registerOrLogin(WxLoginDTO wxLoginDTO) {
+    public WxUser registerOrLogin(String skey, WxEncryptedData wxLoginDTO) {
         log.debug("Validating login data...");
-        validateSignature(wxLoginDTO);
+        validateSignature(skey,wxLoginDTO);
 
-        WxSession session = wxSessionService.findBySkey(wxLoginDTO.getSkey());
-        WxUserInfoDTO userInfoDTO = cryptoService.decryptUserInfo(session, wxLoginDTO);
+        WxSession session = wxSessionService.findBySkey(skey).orElseThrow(WxUserNotFoundException::new);
+        WxUserInfoDTO userInfoDTO = cryptoService.decryptUserInfo(session.getSessionKey(), wxLoginDTO);
         log.debug("Decrypted user data. {}", userInfoDTO);
 
 
@@ -103,7 +96,7 @@ public class WxUserManagementServiceImpl implements WxUserManagementService {
     private WxSession getSessionBySkey(String skey) {
         WxSession session;
         try {
-            session = wxSessionService.findBySkey(skey);
+            session = wxSessionService.findBySkey(skey).orElseThrow(WxUserNotFoundException::new);
         } catch (InvalidSkeyException e) {
             log.warn("skey not found! {}", skey);
             return null;
@@ -116,7 +109,7 @@ public class WxUserManagementServiceImpl implements WxUserManagementService {
         boolean isUserExists = existsUserBySkey(skey);
         if (!isUserExists) throw new WxUserNotFoundException("WxUser not found with the provided skey!");
         log.debug("Finding user with skey: {}", skey);
-        return wxUserService.findByOpenid(wxSessionService.findBySkey(skey).getOpenid()).orElseThrow(WxUserNotFoundException::new);
+        return wxUserService.findByOpenid(wxSessionService.findBySkey(skey).orElseThrow(WxUserNotFoundException::new).getOpenid()).orElseThrow(WxUserNotFoundException::new);
     }
 
 }

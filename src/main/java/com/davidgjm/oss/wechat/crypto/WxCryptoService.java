@@ -1,19 +1,20 @@
 package com.davidgjm.oss.wechat.crypto;
 
-import com.davidgjm.oss.wechat.crypto.WxEncryptedData;
-import com.davidgjm.oss.wechat.auth.WxLoginDTO;
-import com.davidgjm.oss.wechat.wxuser.WxUserInfoDTO;
 import com.davidgjm.oss.wechat.wxsession.WxSession;
+import com.davidgjm.oss.wechat.wxuserinfo.WxUserInfoDTO;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public interface WxCryptoService {
 
-    String decryptPhoneNumber(@NotNull @Validated WxSession session, WxEncryptedData encryptedData);
+    String decryptPhoneNumber(@NotBlank String sessionKey, WxEncryptedData encryptedData);
 
 
-    WxUserInfoDTO decryptUserInfo(@NotNull @Validated WxSession session, WxLoginDTO wxLoginDTO);
+    WxUserInfoDTO decryptUserInfo(@NotBlank String sessionKey, WxEncryptedData encryptedData);
 
     void encryptSessionKey(@NotNull @Validated WxSession session);
+
+    void validateSignature(@NotBlank String sessionKey, String providedSignature, String rawData);
 }

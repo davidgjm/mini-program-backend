@@ -33,7 +33,7 @@ public class WxUserController extends AbstractWechatController {
     @DeleteMapping
     public void deleteUser(@RequestBody @NotNull @Validated WxSkeyDTO skeyDTO) {
         log.info("Removing user [{}] from system", skeyDTO);
-        WxSession wxSession = wxSessionService.findBySkey(skeyDTO.getSkey());
+        WxSession wxSession = wxSessionService.findBySkey(skeyDTO.getSkey()).orElseThrow(WxUserNotFoundException::new);
 
         Optional<WxUser> userOptional = wxUserService.findByOpenid(wxSession.getOpenid());
         log.info("Attempting to delete user from system");

@@ -6,5 +6,4 @@ import lombok.Data;
 @Data
 public class WxSessionDTO extends WxSkeyDTO {
 
-    private boolean isValidUser;
 }

@@ -1,4 +1,4 @@
-package com.davidgjm.oss.wechat.wxuser;
+package com.davidgjm.oss.wechat.wxuserinfo;
 
 import lombok.Data;
 

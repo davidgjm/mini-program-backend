@@ -1,7 +1,6 @@
 package com.davidgjm.oss.wechat.wxuser;
 
-import com.davidgjm.oss.wechat.wxuser.WxUserInfoDTO;
-import com.davidgjm.oss.wechat.wxuser.WxUser;
+import com.davidgjm.oss.wechat.wxuserinfo.WxUserInfoDTO;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;

@@ -19,7 +19,7 @@ public interface WxSessionService {
 
     Optional<WxSession> findByOpenid(String openid);
 
-    WxSession findBySkey(String skey);
+    Optional<WxSession> findBySkey(String skey);
 
     void deleteByOpenid(@NotNull @NotBlank String openid);
 

@@ -1,17 +1,15 @@
 package com.davidgjm.oss.wechat.crypto;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.davidgjm.oss.wechat.base.util.ParamChecker;
 import com.davidgjm.oss.wechat.wxsession.WxSession;
-import com.davidgjm.oss.wechat.auth.WxLoginDTO;
-import com.davidgjm.oss.wechat.wxuser.WxUserInfoDTO;
+import com.davidgjm.oss.wechat.wxuserinfo.WxUserInfoDTO;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -34,9 +32,9 @@ public class WxCryptoServiceImpl implements WxCryptoService {
     }
 
     @Override
-    public WxUserInfoDTO decryptUserInfo(@NotNull @Validated WxSession session, WxLoginDTO wxLoginDTO) {
+    public WxUserInfoDTO decryptUserInfo(@NotBlank String sessionKey, WxEncryptedData encryptedUserInfo) {
         try {
-            String decryptedContent = decrypt(session, wxLoginDTO);
+            String decryptedContent = decrypt(sessionKey, encryptedUserInfo);
             log.debug("decrypted data:\n{}", decryptedContent);
             return objectMapper.readValue(decryptedContent, WxUserInfoDTO.class);
         } catch (Exception e) {
@@ -46,9 +44,9 @@ public class WxCryptoServiceImpl implements WxCryptoService {
     }
 
     @Override
-    public String decryptPhoneNumber(@NotNull @Validated WxSession session, WxEncryptedData encryptedData) {
+    public String decryptPhoneNumber(@NotBlank String sessionKey, WxEncryptedData encryptedData) {
         try {
-            JsonNode jsonNode = objectMapper.readTree(decrypt(session, encryptedData));
+            JsonNode jsonNode = objectMapper.readTree(decrypt(sessionKey, encryptedData));
             return jsonNode.get("phoneNumber").asText();
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,12 +55,12 @@ public class WxCryptoServiceImpl implements WxCryptoService {
         }
     }
 
-    private String decrypt(WxSession session, WxEncryptedData wxEncryptedData) {
-        byte[] sessionKey = Base64.getDecoder().decode(session.getSessionKey());
+    private <T extends WxEncryptedData> String decrypt(String secret, T wxEncryptedData) {
+        byte[] secretData = Base64.getDecoder().decode(secret);
         byte[] encryptedData = Base64.getDecoder().decode(wxEncryptedData.getEncryptedData());
         byte[] iv = Base64.getDecoder().decode(wxEncryptedData.getIv());
 
-        generalAesCipher.init(sessionKey, iv);
+        generalAesCipher.init(secretData, iv);
         try {
             byte[] decrypted = generalAesCipher.decrypt(encryptedData);
             return new String(decrypted, StandardCharsets.UTF_8);
@@ -75,5 +73,18 @@ public class WxCryptoServiceImpl implements WxCryptoService {
     public void encryptSessionKey(WxSession session) {
         ParamChecker.checkArg(session.getSessionKey(),"Session key is required!" );
         session.setSkey(digestUtil.hash(session.getSessionKey()));
+    }
+
+    @Override
+    public void validateSignature(String providedSignature, String rawData, String sessionKey) {
+        String computedSignature = computeSignature(rawData, sessionKey);
+        if (!computedSignature.equals(providedSignature)) {
+            log.error("Signature validation failed. \nsignature: [{}]\ncomputed: [{}]", providedSignature, computedSignature);
+            throw new WxSecurityException("Signature validation failed");
+        }
+    }
+
+    private String computeSignature( String rawData, String sessionKey) {
+        return digestUtil.hash(rawData + sessionKey);
     }
 }

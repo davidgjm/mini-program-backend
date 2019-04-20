@@ -1,5 +1,6 @@
 package com.davidgjm.oss.wechat.wxuser;
 
+import com.davidgjm.oss.wechat.wxuserinfo.WxUserInfoDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,7 +21,7 @@ public class WxUserMapper {
         }
 
         WxUser wxUser = new WxUser();
-
+        wxUser.setOpenid(userInfoDTO.getOpenId());
         return wxUser;
     }
 }

@@ -1,9 +1,9 @@
 package com.davidgjm.oss.wechat.auth;
 
-import com.davidgjm.oss.wechat.wxuser.WxUserNotFoundException;
-import com.davidgjm.oss.wechat.wxuser.WxUser;
-import com.davidgjm.oss.wechat.auth.WxLoginDTO;
+import com.davidgjm.oss.wechat.crypto.WxEncryptedData;
 import com.davidgjm.oss.wechat.wxsession.WxSessionDTO;
+import com.davidgjm.oss.wechat.wxuser.WxUser;
+import com.davidgjm.oss.wechat.wxuser.WxUserNotFoundException;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,9 +15,9 @@ public interface WxUserManagementService {
 
     WxSessionDTO checkSession(String skey);
 
-    boolean validateSignature(WxLoginDTO wxLoginDTO);
+    boolean validateSignature(String skey, WxEncryptedData wxLoginDTO);
 
-    WxUser registerOrLogin(WxLoginDTO wxLoginDTO);
+    WxUser registerOrLogin(String skey, WxEncryptedData wxLoginDTO);
 
     /**
      * Validates if the provided <code>skey</code> exists and a register wxUser exists with this skey.

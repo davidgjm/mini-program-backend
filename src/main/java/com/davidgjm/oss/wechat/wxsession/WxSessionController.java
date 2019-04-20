@@ -1,5 +1,6 @@
 package com.davidgjm.oss.wechat.wxsession;
 
+import com.davidgjm.oss.wechat.auth.WxSkeyNotFoundException;
 import com.davidgjm.oss.wechat.base.controllers.AbstractWechatController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class WxSessionController extends AbstractWechatController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public WxSessionDTO getNewSession(@RequestBody @NotNull @NotBlank WxLoginCodeDTO loginCodeDTO) {
         log.info("Requesting session key for {}", loginCodeDTO);
 
@@ -39,12 +40,14 @@ public class WxSessionController extends AbstractWechatController {
     }
 
 
-    @GetMapping("/check_status")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public void checkSessionStatus(@RequestParam @NotNull @NotBlank String skey) {
+    public WxSessionDTO getSessionStatus(@RequestHeader @NotBlank String skey) {
         log.debug("Checking session for skey: {}", skey);
-        WxSession wxSession = wxSessionService.findBySkey(skey);
+        WxSession wxSession = wxSessionService.findBySkey(skey).orElseThrow(WxSkeyNotFoundException::new);
         log.info("session last modified at {}", wxSession.getLastModifiedDate());
+        return wxSessionService.wxSessionToWxSessionDTO(wxSession);
     }
+
 
 }

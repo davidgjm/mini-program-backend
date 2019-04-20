@@ -1,6 +1,5 @@
 package com.davidgjm.oss.wechat.wxsession;
 
-import com.davidgjm.oss.wechat.auth.InvalidSkeyException;
 import com.davidgjm.oss.wechat.base.services.WxApiService;
 import com.davidgjm.oss.wechat.base.util.ParamChecker;
 import com.davidgjm.oss.wechat.crypto.WxCryptoService;
@@ -67,8 +66,8 @@ public class WxSessionServiceImpl implements WxSessionService {
     }
 
     @Override
-    public WxSession findBySkey(String skey) {
-        return wxSessionRepository.findBySkey(skey).orElseThrow(InvalidSkeyException::new);
+    public Optional<WxSession> findBySkey(String skey) {
+        return wxSessionRepository.findBySkey(skey);
     }
 
     @Override

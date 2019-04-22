@@ -1,1 +1,0 @@
-package com.davidgjm.oss.wechat.wxuser;

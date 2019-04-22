@@ -1,7 +1,6 @@
 package com.davidgjm.oss.wechat.templatemessage;
 
 import com.davidgjm.oss.wechat.base.services.WxApiService;
-import com.davidgjm.oss.wechat.wxuser.WxUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +12,13 @@ import java.util.function.Consumer;
 public class WxTemplateMessageServiceImpl implements WxTemplateMessageService {
     private final WxApiService apiService;
     private final WxFormService wxFormService;
-    private final WxUserService wxUserService;
 
     private WxTemplateMessageConfigService templateMessageConfigService;
 
 
-    public WxTemplateMessageServiceImpl(WxApiService apiService, WxFormService wxFormService, WxUserService wxUserService) {
+    public WxTemplateMessageServiceImpl(WxApiService apiService, WxFormService wxFormService) {
         this.apiService = apiService;
         this.wxFormService = wxFormService;
-        this.wxUserService = wxUserService;
     }
 
     @Autowired
@@ -35,7 +32,6 @@ public class WxTemplateMessageServiceImpl implements WxTemplateMessageService {
                                                             Consumer<WxApiTemplateMessageResponse> responseConsumer) {
         log.debug("Sending template message {} to user {}", templateName, recipientOpenid);
 
-        validateUser(recipientOpenid);
 
         WxTemplateMessage templateMessage = buildMessage(templateName, recipientOpenid, messageData);
         log.debug("templateMessage is {}",templateMessage);
@@ -61,11 +57,6 @@ public class WxTemplateMessageServiceImpl implements WxTemplateMessageService {
         return response;
     }
 
-
-    private void validateUser(String openid) {
-        log.debug("Validating user openid {}", openid);
-        wxUserService.isRegisteredUser(openid);
-    }
 
     private WxTemplateMessage buildMessage(String templateName, String recipientOpenid, WxTemplateMessageData messageData) {
         log.debug("Building template message for {}", templateName);

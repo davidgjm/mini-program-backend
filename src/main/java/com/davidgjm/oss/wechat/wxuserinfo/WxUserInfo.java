@@ -27,6 +27,14 @@ public class WxUserInfo extends GenericEntity {
     private String unionId;
     private String language;
 
+    @Column(nullable = false)
+    private boolean isActive;
+
+
+    @Column(unique = true)
+    private String phoneNumber;
+
+
     @Column(nullable = false, updatable = false)
     protected LocalDateTime creationDate;
 
